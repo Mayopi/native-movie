@@ -3,12 +3,14 @@ import useFavoriteStore from "@/hooks/useFavoriteStore";
 import Card from "@/components/Card";
 
 const Favourite = () => {
+  // get all favorite movies list using global state
   const favorites = useFavoriteStore((state) => state.favorites);
 
   return (
     <View style={styles.container}>
       <Text style={{ ...styles.heading, textAlign: "center" }}>Favorites</Text>
 
+      {/* check if there any fav movie */}
       {favorites.length == 0 ? (
         <View style={{ ...styles.container, height: "100%", width: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
           <Text style={{ ...styles.heading }}>There is no favorite movie yet!</Text>

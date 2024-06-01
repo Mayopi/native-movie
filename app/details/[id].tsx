@@ -9,17 +9,26 @@ import useFavoriteStore, { Item } from "@/hooks/useFavoriteStore";
 import { useEffect, useState } from "react";
 import { FontAwesome } from "@expo/vector-icons";
 
+// prepare query client for react-query
 const queryClient = new QueryClient();
 
 function DetailsScreen() {
+  // get parameter for id
   const { id } = useLocalSearchParams();
+  // get movies by id with useGetMovieById hooks
   const { data, isLoading, isError } = useGetMovieById(id);
+  // base url for poster in TMDB API
   const poster_path_base_url = "https://image.tmdb.org/t/p/w500";
+  // add to favorite using useFavoriteStore hooks
   const addToFavorites = useFavoriteStore((state) => state.addToFavorites);
+  // remove from favorite using useFavoriteStore hooks
   const removeFromFavorite = useFavoriteStore((state) => state.removeFromFavorite);
+  // get all favorite movie list
   const favorites = useFavoriteStore((state) => state.favorites);
+  // state for tracking is current movie already in favorite list
   const [isFavorite, setisFavorite] = useState<boolean>(false);
 
+  // toggle for add / remove movie to / from favorite list
   const handleToggleFavorite = () => {
     const item: Item = {
       id: data.id,
@@ -27,6 +36,7 @@ function DetailsScreen() {
       poster_path: data.poster_path,
     };
 
+    // check if movie not in favorite list
     if (!isFavorite) {
       addToFavorites(item);
     } else {
@@ -35,11 +45,13 @@ function DetailsScreen() {
   };
 
   useEffect(() => {
+    // set isFavorite value by finding movie already in favorite list or not
     if (data) {
-      setisFavorite(favorites.some((fav) => fav.id == data.id));
+      setisFavorite(favorites.some((fav) => fav.id == data.id)); // boolean
     }
   }, [data, favorites]);
 
+  // check is fetching on loading
   if (isLoading) {
     return (
       <View style={{ ...styles.container, height: "100%", width: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
@@ -47,6 +59,8 @@ function DetailsScreen() {
       </View>
     );
   }
+
+  // check if there any error while fetching
 
   if (isError) {
     return (
