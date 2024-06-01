@@ -1,20 +1,49 @@
-# Welcome to your Expo app 👋
+# Welcome to Simple Movie App created with Expo & React Native
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
+## Prerequisite
+
+Before starting this project, there are prerequisite to get running this project
+
+- [Android Studio](https://developer.android.com/studio?gad_source=1&gclid=CjwKCAjwjeuyBhBuEiwAJ3vuobR__MYLVjqFCRA_QvKta-jscSXjlIhFVfuny7Q_OXwMSZhqlBORMhoC19MQAvD_BwE&gclsrc=aw.ds&hl=id)
+- [Node](https://nodejs.org/en)
+- OpenJDK17 / Java SE Development Kit
+
+Make sure to configure your Android studio SDK to ANDROID_HOME Environment Variable as descripted in the [React Native Documentation](https://reactnative.dev/docs/set-up-your-environment)
+
 ## Get started
+
+#### Clone this project by using
+
+```bash
+git clone https://github.com/Mayopi/native-movie.git
+```
+
+After cloning, enter the directory and follow these instruction
 
 1. Install dependencies
 
    ```bash
-   npm install
+   yarn install
    ```
 
-2. Start the app
+2. Set up your environment variable
+
+You can get this API key in [The Movie Database Documentation](https://developer.themoviedb.org/docs/getting-started)
+
+```env
+EXPO_PUBLIC_TMDB_API_KEY=
+EXPO_PUBLIC_TMDB_API_READ_ACCESS_TOKEN=
+```
+
+3. Start the app
 
    ```bash
-    npx expo start
+    yarn start
    ```
+
+4. Scan the QR code Expo Go (Android) or the Camera app (iOS), or you can use the emulator on Android Studio
 
 In the output, you'll find options to open the app in a
 
@@ -24,16 +53,6 @@ In the output, you'll find options to open the app in a
 - [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
 
 You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
 
 ## Learn more
 
