@@ -8,8 +8,10 @@ import { useState, useCallback } from "react";
 import { useDebounce } from "use-debounce";
 import { Link } from "expo-router";
 
+//preparing query client for react query
 const queryClient = new QueryClient();
 
+//interfaces
 export interface Movie {
   title: string;
   poster_path: string;
@@ -22,10 +24,14 @@ export interface Data {
 
 const Index = () => {
   const [search, setSearch] = useState<string>();
+  // use debounce for delaying search feature for minimizing api calls
   const [debouncedSearch] = useDebounce(search, 1000);
+
+  // useGeMovies hooks for getting all discoveries movies or by query if given
   let { movies, loading, error, loadMore, refetch } = useGetMovies(debouncedSearch);
   const [refreshing, setRefreshing] = useState<boolean>(false);
 
+  // refetch movies when onRefresh
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
     try {

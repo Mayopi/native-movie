@@ -2,6 +2,7 @@ import { View, Image, Text, TouchableOpacity } from "react-native";
 const reactLogo = require("@/assets/images/react-logo.png");
 import { Link } from "expo-router";
 
+// interfaces
 interface CardProps {
   title: string;
   poster_path?: string;
@@ -9,6 +10,7 @@ interface CardProps {
 }
 
 const Card: React.FC<CardProps> = ({ title, poster_path, id }) => {
+  // base url to get poster image from TMDB API
   const poster_path_base_url = "https://image.tmdb.org/t/p/w500";
   return (
     <Link href={`/details/${id}`} style={{ maxWidth: "33%" }}>

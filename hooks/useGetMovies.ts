@@ -14,6 +14,7 @@ const useGetMovies = (
   loadMore: () => void;
   refetch: () => void;
 } => {
+  // state management
   const [movies, setMovies] = useState<Movie[]>([]);
   const [page, setPage] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(false);
@@ -23,6 +24,7 @@ const useGetMovies = (
     setLoading(true);
     try {
       let response;
+      //   check if any query, then fetch by query. else fetch discover endpoint
       if (query) {
         response = await fetch(`https://api.themoviedb.org/3/search/movie?page=${reset ? 1 : page}&api_key=${process.env.EXPO_PUBLIC_TMDB_API_KEY}&query=${query}`);
       } else {
@@ -36,9 +38,11 @@ const useGetMovies = (
         setMovies(data.results);
         setPage(2);
       } else {
+        // set initial movies if page == 1
         if (page === 1) {
           setMovies(data.results);
         } else {
+          // append more movies
           setMovies((prevMovies) => [...prevMovies, ...data.results]);
         }
       }
@@ -57,10 +61,12 @@ const useGetMovies = (
     fetchMovies();
   }, [query, page]);
 
+  // loadMore movies by incrementing prevPage + 1
   const loadMore = () => {
     setPage((prevPage) => prevPage + 1);
   };
 
+  //   refetch the movies
   const refetch = useCallback(() => {
     fetchMovies(true);
   }, [query]);
