@@ -1,12 +1,11 @@
 import { Text, View, TouchableOpacity, TextInput, StyleSheet, FlatList, ActivityIndicator, RefreshControl } from "react-native";
-import { Feather } from "@expo/vector-icons";
-import { Entypo } from "@expo/vector-icons";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Card from "@/components/Card";
 import useGetMovies from "@/hooks/useGetMovies";
 import { useState, useCallback } from "react";
 import { useDebounce } from "use-debounce";
 import { Link } from "expo-router";
+import { FontAwesome5, FontAwesome6 } from "@expo/vector-icons";
 
 //preparing query client for react query
 const queryClient = new QueryClient();
@@ -60,14 +59,14 @@ const Index = () => {
           )}
         </View>
         <Link href={"/favorite"}>
-          <Feather name="bookmark" size={30} color="white" />
+          <FontAwesome5 name="bookmark" size={30} color="white" />
         </Link>
       </View>
 
       <View style={{ display: "flex", flexDirection: "row", borderWidth: 1, borderColor: "white", borderRadius: 5, width: "100%", justifyContent: "space-between", marginTop: 24, padding: 6 }}>
         <TextInput placeholder="Search here..." style={{ width: "90%", color: "white" }} placeholderTextColor={"white"} onChangeText={setSearch} />
         <TouchableOpacity>
-          <Entypo name="magnifying-glass" size={24} color="white" />
+          <FontAwesome6 name="magnifying-glass" size={24} color="white" />
         </TouchableOpacity>
       </View>
 

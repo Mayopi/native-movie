@@ -2,12 +2,9 @@ import useGetMovieById from "@/hooks/useGetMovieById";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useLocalSearchParams } from "expo-router";
 import { View, Text, StyleSheet, Image, ActivityIndicator, TouchableOpacity } from "react-native";
-import { Feather } from "@expo/vector-icons";
-import { AntDesign } from "@expo/vector-icons";
-import { Ionicons } from "@expo/vector-icons";
 import useFavoriteStore, { Item } from "@/hooks/useFavoriteStore";
 import { useEffect, useState } from "react";
-import { FontAwesome } from "@expo/vector-icons";
+import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
 
 // prepare query client for react-query
 const queryClient = new QueryClient();
@@ -81,21 +78,21 @@ function DetailsScreen() {
           <View style={{ width: "100%", display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
             <View>
               <View style={styles.detailContainer}>
-                <Feather name="calendar" size={16} color="white" />
+                <FontAwesome5 name="calendar" size={16} color="white" />
                 <Text style={styles.text}>{data.release_date}</Text>
                 <Text style={styles.text}>|</Text>
-                <AntDesign name="clockcircleo" size={16} color="white" />
+                <FontAwesome5 name="clock" size={16} color="white" />
                 <Text style={styles.text}>{data.runtime} Minutes</Text>
               </View>
 
               <View style={{ ...styles.detailContainer, marginTop: 6 }}>
-                <Ionicons name="ticket" size={16} color="white" />
+                <FontAwesome5 name="ticket-alt" size={16} color="white" />
                 <Text style={{ ...styles.text }}>{data.genres.map((genre: { id: string; name: string }) => genre.name).join(", ")}</Text>
               </View>
             </View>
 
             <View style={{ display: "flex", flexDirection: "row", gap: 5, alignItems: "center", justifyContent: "center" }}>
-              <AntDesign name="staro" size={24} color="orange" />
+              <FontAwesome5 name="star" size={24} color="orange" />
               <Text style={{ color: "orange", fontSize: 18, fontWeight: "bold" }}>{data.vote_average.toFixed(1)}</Text>
             </View>
           </View>
@@ -108,7 +105,7 @@ function DetailsScreen() {
         <TouchableOpacity style={styles.button} onPress={handleToggleFavorite}>
           <View style={{ display: "flex", flexDirection: "row", gap: 5, justifyContent: "center", alignItems: "center" }}>
             <Text style={styles.buttonText}>{isFavorite ? "Added to Favorite" : "Add to Favorite"}</Text>
-            {isFavorite ? <FontAwesome name="bookmark" size={24} color="black" /> : <Feather name="bookmark" size={24} color="black" />}
+            {isFavorite ? <FontAwesome name="bookmark" size={24} color="black" /> : <FontAwesome5 name="bookmark" size={24} color="black" />}
           </View>
         </TouchableOpacity>
       </View>
