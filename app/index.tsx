@@ -2,10 +2,11 @@ import { Text, View, TouchableOpacity, TextInput, StyleSheet, FlatList, Activity
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Card from "@/components/Card";
 import useGetMovies from "@/hooks/useGetMovies";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useDebounce } from "use-debounce";
 import { Link } from "expo-router";
 import { FontAwesome5, FontAwesome6 } from "@expo/vector-icons";
+import useSearchMovies from "@/hooks/useSearchMovie";
 
 //preparing query client for react query
 const queryClient = new QueryClient();
@@ -22,25 +23,47 @@ export interface Data {
 }
 
 const Index = () => {
-  const [search, setSearch] = useState<string>();
+  const [search, setSearch] = useState<string>("");
   // use debounce for delaying search feature for minimizing api calls
   const [debouncedSearch] = useDebounce(search, 1000);
 
-  // useGeMovies hooks for getting all discoveries movies or by query if given
-  let { movies, loading, error, loadMore, refetch } = useGetMovies(debouncedSearch);
+  // useGeMovies hooks for getting all discoveries movies
+  let { movies: discoverMovie, loading: discoverLoading, error: discoverError, loadMore: discoverLoadMore, refetch: discoverRefetch } = useGetMovies();
+  // useSearchMovie hooks for getting movies by query
+  const { movies: searchMovie, loading: searchLoading, error: searchError, loadMore: searchLoadMore, refetch: searchRefetch } = useSearchMovies(debouncedSearch);
   const [refreshing, setRefreshing] = useState<boolean>(false);
+
+  const loadMore = () => {
+    if (debouncedSearch) {
+      searchLoadMore();
+    } else {
+      discoverLoadMore();
+    }
+  };
+
+  const refetch = () => {
+    if (debouncedSearch) {
+      searchRefetch();
+    } else {
+      discoverRefetch();
+    }
+  };
 
   // refetch movies when onRefresh
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
     try {
-      await refetch();
+      refetch();
     } catch (error) {
       console.error(error);
     } finally {
       setRefreshing(false);
     }
   }, [refetch]);
+
+  const movies = debouncedSearch ? searchMovie : discoverMovie;
+  const loading = debouncedSearch ? searchLoading : discoverLoading;
+  const error = debouncedSearch ? searchError : discoverError;
 
   return (
     <View style={styles.container}>
@@ -54,7 +77,7 @@ const Index = () => {
           )}
           {error && (
             <View style={{ padding: 10, alignItems: "center" }}>
-              <Text>Error: {error.message}</Text>
+              <Text>Oops something went wrong...</Text>
             </View>
           )}
         </View>

@@ -3,7 +3,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useLocalSearchParams } from "expo-router";
 import { View, Text, StyleSheet, Image, ActivityIndicator, TouchableOpacity } from "react-native";
 import useFavoriteStore, { Item } from "@/hooks/useFavoriteStore";
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
 
 // prepare query client for react-query
@@ -23,7 +23,11 @@ function DetailsScreen() {
   // get all favorite movie list
   const favorites = useFavoriteStore((state) => state.favorites);
   // state for tracking is current movie already in favorite list
-  const [isFavorite, setisFavorite] = useState<boolean>(false);
+  const isFavorite = useMemo(() => {
+    return data && favorites.map((item) => item.id).indexOf(data.id) !== -1;
+  }, [data, favorites]);
+
+  const [favoriteStatus, setFavoriteStatus] = useState<boolean>(isFavorite);
 
   // toggle for add / remove movie to / from favorite list
   const handleToggleFavorite = () => {
@@ -40,13 +44,6 @@ function DetailsScreen() {
       removeFromFavorite(item.id);
     }
   };
-
-  useEffect(() => {
-    // set isFavorite value by finding movie already in favorite list or not
-    if (data) {
-      setisFavorite(favorites.some((fav) => fav.id == data.id)); // boolean
-    }
-  }, [data, favorites]);
 
   // check is fetching on loading
   if (isLoading) {

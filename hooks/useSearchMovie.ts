@@ -4,10 +4,11 @@ import { Movie } from "@/app";
 interface ApiResponse {
   results: Movie[];
   total_pages: number;
+  page: number;
 }
 
-const useDiscoverMovies = (
-  maxPages: number = 5
+const useSearchMovies = (
+  query: string | undefined
 ): {
   movies: Movie[];
   loading: boolean;
@@ -23,7 +24,7 @@ const useDiscoverMovies = (
   const fetchMovies = async (reset = false) => {
     setLoading(true);
     try {
-      const response = await fetch(`https://api.themoviedb.org/3/discover/movie?page=${reset ? 1 : page}&api_key=${process.env.EXPO_PUBLIC_TMDB_API_KEY}`);
+      const response = await fetch(`https://api.themoviedb.org/3/search/movie?page=${reset ? 1 : page}&api_key=${process.env.EXPO_PUBLIC_TMDB_API_KEY}&query=${query}`);
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
@@ -34,7 +35,7 @@ const useDiscoverMovies = (
       } else {
         if (page === 1) {
           setMovies(data.results);
-        } else if (page >= data.total_pages || page >= maxPages) {
+        } else if (page >= data.total_pages) {
           return;
         } else {
           setMovies((prevMovies) => [...prevMovies, ...data.results]);
@@ -48,8 +49,12 @@ const useDiscoverMovies = (
   };
 
   useEffect(() => {
+    setPage(1);
+  }, [query]);
+
+  useEffect(() => {
     fetchMovies();
-  }, [page]);
+  }, [query, page]);
 
   const loadMore = () => {
     setPage((prevPage) => prevPage + 1);
@@ -57,9 +62,9 @@ const useDiscoverMovies = (
 
   const refetch = useCallback(() => {
     fetchMovies(true);
-  }, []);
+  }, [query]);
 
   return { movies, loading, error, loadMore, refetch };
 };
 
-export default useDiscoverMovies;
+export default useSearchMovies;
