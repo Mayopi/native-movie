@@ -27,8 +27,6 @@ function DetailsScreen() {
     return data && favorites.map((item) => item.id).indexOf(data.id) !== -1;
   }, [data, favorites]);
 
-  const [favoriteStatus, setFavoriteStatus] = useState<boolean>(isFavorite);
-
   // toggle for add / remove movie to / from favorite list
   const handleToggleFavorite = () => {
     const item: Item = {
